@@ -65,7 +65,7 @@ a {
 /* ICON STYLING */
 .nav a {
   font-size: 1.5rem; /* clean size */
-  color: var(--arch);
+  color: var(--primary);
   transition: 0.25s ease;
 }
 
@@ -78,7 +78,7 @@ a {
 .sidebar-name {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #ffffffcc;
+  color: var(--primary);
   margin-bottom: 1rem;
   letter-spacing: 1px;
 }
@@ -91,10 +91,11 @@ a {
     height: 60px;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 4%;
   }
 
   .nav ul {
+    margin-left: 4%;
+    padding-left: 4%;
     flex-direction: row;
     gap: 25px;
     margin-top: 0;
@@ -102,6 +103,8 @@ a {
 
   /* NAME NOW HORIZONTAL */
   .sidebar-name {
+    margin-right: 4%;
+    padding-right: 4%;
     writing-mode: horizontal-tb;
     margin-bottom: 0;
     font-size: 1rem;
@@ -124,7 +127,7 @@ a {
 }
 
 .hero-arch img {
-  width: 40%;
+  padding-left: 0% !important;
   max-width: 350px;
   height: auto;
   border-radius: 50%;
@@ -184,6 +187,8 @@ a {
 }
 
 .cv-button {
+  min-width: 120px; /* ensures button doesn't get too narrow */
+
   display: inline-flex; /* fits content width */
   justify-content: center;
   align-items: center;
@@ -202,10 +207,24 @@ a {
   box-shadow: 0 0.5rem 1rem var(--shadow);
 }
 
+@media (max-width: 600px) {
+  .cv-button {
+    min-width: 120px; /* ensures button doesn't get too narrow */
+
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 1.5rem;
+    width: auto; /* prevents stretching weirdly */
+    margin-inline: auto; /* centers the button */
+  }
+}
+
 /* 📱 Mobile responsiveness */
 @media (max-width: 600px) {
   /* FIX: prevent text shifting left */
   .hero-text {
+    min-width: 120px; /* ensures button doesn't get too narrow */
+
     max-width: 100%;
     margin-top: 0;
     padding: 1.5rem;
@@ -238,7 +257,9 @@ a {
 
   /* Your button responsiveness */
   .cv-button {
-    padding: 0.6rem 1.2rem;
+    min-width: 120px; /* ensures button doesn't get too narrow */
+
+    padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
     border-radius: 1.5rem;
     width: auto; /* prevents stretching weirdly */
@@ -331,20 +352,14 @@ section h2::after {
 }
 /* ===================== timeline ===================== */
 
-/* Timeline subtitles */
-.timeline-subtitle {
-  text-align: center;
-  font-size: 1.5rem;
-  color: var(--primary);
-  margin: 2rem 0 1rem;
-}
-
-/* Timeline main line */
+/* Timeline container with horizontal padding for desktop */
 .timeline {
   position: relative;
   margin: 2rem 0;
-  padding: 0;
+  padding: 0 120px; /* adjust for side nav */
 }
+
+/* Timeline vertical line */
 .timeline::before {
   content: "";
   position: absolute;
@@ -359,50 +374,152 @@ section h2::after {
 /* Timeline items */
 .timeline-item {
   position: relative;
-  width: 45%;
-  margin-bottom: 3rem;
+  width: 45%; /* slightly wider for padding */
+  margin-bottom: 1rem;
 }
+
 .timeline-item:nth-child(odd) {
   left: 0;
   text-align: right;
 }
+
 .timeline-item:nth-child(even) {
-  left: 55%;
+  left: 55%; /* adjusted for 45% width */
   text-align: left;
 }
 
 /* Timeline content */
 .timeline-content {
   background: var(--highlight);
-  padding: 1.5rem;
-  border-radius: 1rem;
+  padding: 1rem; /* slightly larger for readability */
+  border-radius: 0.75rem;
   box-shadow: 0 1.5rem 3.5rem var(--shadow);
   text-align: center;
+  transition: transform 0.3s;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px);
 }
 
 .timeline-content i {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--accent);
   margin-bottom: 0.5rem;
 }
 
-/* Responsive timeline */
+.timeline-content h3 {
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.timeline-content p {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  margin: 0.2rem 0 0;
+}
+
+/* Tablets / small laptops */
+@media (max-width: 1024px) {
+  .timeline {
+    padding: 0 60px; /* side margins */
+    position: relative;
+  }
+
+  .timeline-item {
+    width: 40%; /* smaller cards */
+    padding: 0.8rem 1rem;
+  }
+
+  /* Shift odd items in from left margin */
+  .timeline-item:nth-child(odd) {
+    left: 0;
+  }
+
+  /* Shift even items in from right margin */
+  .timeline-item:nth-child(even) {
+    left: calc(100% - 40%); /* 100% minus item width */
+  }
+
+  /* Optional: adjust the timeline line */
+  .timeline::before {
+    left: 50%; /* keep it centered */
+    transform: translateX(-50%);
+  }
+}
+/* Mobile */
 @media (max-width: 768px) {
+  .timeline {
+    padding: 0 15px;
+    position: relative;
+  }
+
+  .timeline::before {
+    left: 50%; /* center the vertical line */
+    transform: translateX(-50%);
+  }
+
   .timeline-item,
   .timeline-item:nth-child(odd),
   .timeline-item:nth-child(even) {
-    width: 100%;
-    left: 0 !important;
+    width: calc(100% - 40px); /* card width minus some side margin */
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 1rem 0;
+    padding: 1rem;
     text-align: left;
+  }
+
+  .timeline-item i {
+    left: 50%; /* icon centered with line */
+    transform: translateX(-50%);
   }
 }
 
 /* ===================== SKILLS ===================== */
+/* Wrapper for both skill sections */
+.skills-wrapper {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 3rem;
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+/* Vertical dividing line */
+.skills-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--secondary);
+  border-radius: 10px;
+}
+
+/* Each skills section */
+.skills-wrapper section {
+  width: 45%;
+  text-align: center;
+}
+
+/* Adjust grids inside */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 2%;
   justify-items: center;
+  align-items: center;
 }
 
 .skill-card {
@@ -416,7 +533,7 @@ section h2::after {
   transition: transform 0.3s;
   padding: 1%;
   width: 150px;
-  height: 220px;
+  height: 150px;
 }
 
 .skill-card:hover {
@@ -431,73 +548,76 @@ section h2::after {
   font-size: 1rem;
   font-weight: 500;
 }
-/* ===================== PROJECTS BENTO GRID ===================== */
-.grid-bento {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* two columns */
-  grid-template-rows: repeat(2, 250px); /* two rows */
-  gap: 2%;
-  grid-template-areas:
-    "signin firstaid"
-    "zaweya firstaid";
-}
 
-.grid-bento article:nth-child(1) {
-  grid-area: signin;
-}
-
-.grid-bento article:nth-child(2) {
-  grid-area: zaweya;
-}
-
-.grid-bento article:nth-child(3) {
-  grid-area: firstaid;
-  grid-row: span 2;
-}
-
-/* ===================== PROJECT CARD ===================== */
-.project-card {
+/* Projects wrapper */
+.projects-wrapper {
+  padding-left: 0% !important;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2%;
+  justify-content: center;
+}
+
+/* Project Card */
+.project-card {
+  padding-left: 0% !important;
+  flex: 1 1 23%; /* ~23% width, grows/shrinks */
   border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0 1.5rem 4rem var(--shadow);
-  position: relative;
   background: var(--arch);
+  position: relative;
+  min-width: 250px;
+  max-width: 350px;
+  margin-bottom: 2rem;
 }
 
-/* IMAGE CONTAINER */
+.project-card a {
+  padding-left: 0% !important;
+
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Image container */
 .project-img-container {
+  padding-left: 0% !important;
   position: relative;
   width: 100%;
-  height: 90%; /* image height */
+  height: 200px;
+  overflow: hidden;
+  border-radius: 2rem;
 }
 
 .project-card img {
+  padding-left: 0% !important;
   width: 100%;
   height: 100%;
-  object-fit: fill; /* keeps proportions */
+  object-fit: fill;
+  display: block;
 }
 
-/* OVERLAY */
+/* Overlay */
 .project-card .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 166, 201, 0.25);
+  background: rgba(255, 166, 201, 0.50);
   box-shadow: 0 0 20px var(--accent);
   backdrop-filter: blur(3px);
-  opacity: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 2%;
+  opacity: 0;
   transition: 0.4s;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .project-card:hover .overlay {
@@ -515,32 +635,67 @@ section h2::after {
   color: var(--text);
 }
 
-/* PROJECT DESCRIPTION */
-.project-description {
-  font-size: 0.9rem;
-  color: var(--text);
-  text-align: center;
-  margin-top: 0.5rem;
-  padding: 0 1rem;
+.project-card .overlay i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  
+
+  .project-card {
+    flex: 1 1 45%;
+  }
+}
+
+@media (max-width: 768px) {
+F
+  .project-card {
+    flex: 1 1 90%;
+  }
 }
 
 /* ===================== FOOTER ===================== */
+
 footer {
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-  color: var(--primary);
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    var(--secondary) 70%,
+    var(--accent) 100%
+  );
+  color: var(--text);
   text-align: center;
-  padding: 2rem 0;
+  font-size: 1.2rem;
+  padding: 1rem 1rem; /* padding above/below text */
 }
 
+/* unify all text and links */
+footer p,
 footer a {
   color: var(--text);
-  font-size: 1.5rem;
-  margin: 0 2%;
+  font-size: 1.2rem;
+  margin: 0.3rem 0;
+  text-decoration: none;
   transition: 0.3s;
 }
 
 footer a:hover {
   color: var(--arch);
+}
+
+/* make footer sit at bottom */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1; /* main grows to fill space above footer */
 }
 
 /* ===================== ANIMATIONS ===================== */
@@ -575,6 +730,19 @@ footer a:hover {
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 768px) {
+  .skills-wrapper {
+    flex-direction: column;
+  }
+
+  .skills-wrapper::before {
+    display: none;
+  }
+
+  .skills-wrapper section {
+    width: 100%;
+  }
+}
 
 @media (max-width: 768px) {
   .skills-grid {
@@ -583,7 +751,7 @@ footer a:hover {
   }
   .skill-card {
     width: 120px;
-    height: 200px;
+    height: 120px;
   }
   .skill-card i {
     font-size: 2rem;
@@ -603,7 +771,7 @@ footer a:hover {
   }
   .skill-card {
     width: 100px;
-    height: 180px;
+    height: 100px;
   }
   .skill-card i {
     font-size: 1.8rem;
