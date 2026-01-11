@@ -107,6 +107,13 @@ footer {
   background: var(--arch);
 }
 
+/* Dark Mode Sidebar Icons - Darker Color */
+#dark-mode-toggle:checked~.page-wrapper .nav a,
+#dark-mode-toggle:checked~.page-wrapper .dark-toggle i,
+#dark-mode-toggle:checked~.page-wrapper .sidebar-name {
+  color: #1e293b;
+}
+
 * {
   margin: 0;
   padding-left: 1.5%;
